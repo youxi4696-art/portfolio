@@ -1,0 +1,2383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yujie Zhang — UI/UX Designer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fbfaf7;
+  --surface: rgba(255,255,255,0.78);
+  --card: #ffffff;
+  --text: #1c1d1f;
+  --text-soft: #666b73;
+  --text-muted: #9aa0a8;
+  --line: rgba(28,29,31,0.09);
+  --accent: #0e9f9f;
+  --accent-soft: rgba(14,159,159,0.1);
+  --accent-deep: #0b7a7a;
+  --violet: #4f46e5;
+  --violet-soft: rgba(79,70,229,0.1);
+  --blue-soft: rgba(89,154,255,0.12);
+  --shadow-sm: 0 10px 30px rgba(15, 28, 45, 0.05);
+  --shadow-md: 0 20px 60px rgba(15, 28, 45, 0.1);
+  --shadow-lg: 0 30px 80px rgba(15, 28, 45, 0.14);
+  --radius: 24px;
+  --radius-sm: 16px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 0.24s;
+  --duration-base: 0.4s;
+  --duration-slow: 0.7s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "DM Sans", "Noto Sans SC", sans-serif;
+  background:
+    radial-gradient(circle at 28% 12%, rgba(184, 199, 255, 0.18), transparent 24%),
+    radial-gradient(circle at 66% 20%, rgba(255, 214, 186, 0.18), transparent 26%),
+    radial-gradient(circle at 58% 76%, rgba(255, 192, 164, 0.14), transparent 24%),
+    #fbfaf7;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+body.modal-open { overflow: hidden; }
+
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 1200;
+  mix-blend-mode: difference;
+  transition: transform 0.2s var(--ease-out), opacity 0.2s ease, background 0.2s ease;
+  display: none;
+  will-change: transform;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(14, 159, 159, 0.4);
+  pointer-events: none;
+  z-index: 1199;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), border-color 0.3s ease;
+  display: none;
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .cursor-dot,
+  .cursor-ring { display: block; }
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--violet));
+  z-index: 300;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+.back-to-top {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.92);
+  transition: all 0.4s var(--ease-out);
+  z-index: 250;
+  color: var(--text);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.back-to-top:hover {
+  background: var(--text);
+  color: #fff;
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: var(--shadow-lg);
+}
+
+.back-to-top svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.back-to-top:hover svg { transform: translateY(-2px); }
+
+nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 48px;
+  transition: padding 0.4s var(--ease-out), background 0.4s ease, border-color 0.4s ease;
+}
+
+nav.scrolled {
+  padding: 14px 48px;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  background: rgba(251, 250, 247, 0.78);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-logo {
+  text-decoration: none;
+  color: var(--text);
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  font-weight: 700;
+  transition: transform 0.3s var(--ease-out), letter-spacing 0.3s var(--ease-out);
+  letter-spacing: 0.01em;
+}
+
+.nav-logo:hover { letter-spacing: 0.06em; }
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  position: relative;
+  padding: 6px 2px;
+  transition: color 0.3s var(--ease-out);
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--text);
+  transition: width 0.32s var(--ease-out);
+}
+
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--text); }
+.nav-links a.active::after {
+  width: 100%;
+  background: var(--accent);
+}
+
+section {
+  width: min(1400px, calc(100% - 96px));
+  margin: 0 auto;
+}
+
+.hero {
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+  padding: 120px 0 80px;
+  position: relative;
+}
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto;
+  border-radius: 999px;
+  filter: blur(12px);
+  z-index: 0;
+}
+
+.hero::before {
+  width: 520px;
+  height: 520px;
+  left: -120px;
+  bottom: -90px;
+  background: radial-gradient(circle, rgba(180, 197, 255, 0.22) 0%, rgba(180, 197, 255, 0.08) 45%, transparent 72%);
+}
+
+.hero::after {
+  width: 620px;
+  height: 620px;
+  right: -80px;
+  top: -120px;
+  background: radial-gradient(circle, rgba(255, 214, 186, 0.2) 0%, rgba(255, 214, 186, 0.08) 45%, transparent 70%);
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1fr;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-greeting {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.hero-name {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(52px, 6vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  margin-bottom: 12px;
+}
+
+.hero-name-cn {
+  font-size: clamp(18px, 2vw, 24px);
+  letter-spacing: 0.34em;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.hero-title {
+  font-size: 20px;
+  color: var(--text-soft);
+  margin-bottom: 14px;
+}
+
+.hero-desc {
+  max-width: 520px;
+  line-height: 1.9;
+  color: var(--text-soft);
+  margin-bottom: 36px;
+}
+
+.hero-cta-group {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cta-primary,
+.cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 26px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.28s var(--ease-out);
+}
+
+.cta-primary {
+  position: relative;
+  overflow: hidden;
+  background: var(--text);
+  color: #fff;
+}
+
+.cta-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, var(--accent), #58b8ff);
+  transform: translateX(-100%);
+  transition: transform 0.5s var(--ease-out);
+}
+
+.cta-primary > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.cta-primary:hover::before { transform: translateX(0); }
+
+.cta-secondary {
+  color: var(--text);
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.72);
+}
+
+.cta-secondary:hover {
+  border-color: rgba(28,29,31,0.25);
+  transform: translateY(-2px);
+}
+
+.cta-primary svg,
+.cta-secondary svg,
+.project-cta svg {
+  transition: transform 0.3s var(--ease-out);
+}
+
+.cta-primary:hover svg,
+.cta-secondary:hover svg {
+  transform: translateX(3px);
+}
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 560px;
+  perspective: 1000px;
+}
+
+.hero-photo-wrapper {
+  width: 380px;
+  height: 480px;
+  border-radius: 240px 240px 30px 30px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.65);
+  background:
+    radial-gradient(circle at 40% 22%, rgba(255,255,255,0.8), rgba(255,255,255,0) 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(240,245,247,0.92));
+  box-shadow: var(--shadow-md);
+  position: relative;
+  transition: transform 0.55s var(--ease-out), box-shadow 0.45s var(--ease-out);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.hero-photo-wrapper:hover { box-shadow: var(--shadow-lg); }
+
+.hero-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center top;
+  transform: scale(1.05) translateY(10px);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.hero-photo-wrapper:hover .hero-photo-img {
+  transform: scale(1.08) translateY(6px);
+}
+
+.hero-photo-sheen {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0) 34%),
+    linear-gradient(0deg, rgba(18, 30, 48, 0.08), rgba(18, 30, 48, 0) 42%);
+  pointer-events: none;
+}
+
+.hero-float-card {
+  position: absolute;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.65);
+  box-shadow: var(--shadow-sm);
+  border-radius: 16px;
+  padding: 15px 18px;
+  transition: transform 0.45s var(--ease-out), box-shadow 0.35s ease;
+  will-change: transform;
+}
+
+.hero-float-card:hover { box-shadow: var(--shadow-md); }
+
+.hero-float-card.card-1 {
+  top: 44px;
+  right: -34px;
+  animation: floatA 6s ease-in-out infinite;
+}
+.hero-float-card.card-2 {
+  left: -44px;
+  bottom: 94px;
+  animation: floatB 7s ease-in-out infinite;
+}
+.hero-float-card.card-3 {
+  right: -20px;
+  bottom: 30px;
+  animation: floatA 8s ease-in-out infinite;
+}
+
+@keyframes floatA {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -14px, 0); }
+}
+
+@keyframes floatB {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, 12px, 0); }
+}
+
+.float-card-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.float-card-value {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.scroll-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 42px;
+  background: rgba(28,29,31,0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.scroll-line::after {
+  content: "";
+  position: absolute;
+  inset: -42px 0 auto;
+  height: 42px;
+  background: rgba(28,29,31,0.45);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  to { transform: translateY(84px); }
+}
+
+.scroll-text {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.section-shell,
+#about,
+#contact,
+footer {
+  position: relative;
+}
+
+#contact::before,
+footer::before {
+  content: "";
+  position: absolute;
+  inset: 18px 0 0;
+  border-radius: 40px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(184, 199, 255, 0.16) 0%, transparent 28%),
+    radial-gradient(circle at 78% 22%, rgba(255, 214, 186, 0.16) 0%, transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,0.52), rgba(255,255,255,0.28));
+  border: 1px solid rgba(255,255,255,0.56);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 22px;
+}
+
+.section-label::before {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: currentColor;
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(38px, 4.2vw, 58px);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  margin-bottom: 18px;
+}
+
+.section-subtitle {
+  max-width: 620px;
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+#about {
+  padding: 120px 0;
+}
+
+.about-grid {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(380px, 0.98fr);
+  gap: 80px;
+  align-items: start;
+  position: relative;
+  z-index: 1;
+}
+
+.about-grid > * {
+  align-self: start;
+}
+
+.about-text,
+.about-right {
+  margin-top: 0;
+}
+
+.about-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  top: 0;
+  margin-top: -228px;
+}
+
+.about-text p {
+  color: var(--text-soft);
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 30px;
+  margin-top: 42px;
+}
+
+.stat-item {
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.stat-number {
+  font-family: "Playfair Display", serif;
+  font-size: 38px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.about-resume-card {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  margin: 0 0 28px 0;
+}
+
+.about-resume-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.about-resume-card figcaption {
+  display: none;
+}
+
+.experience-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 22px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.timeline-item:last-child { border-bottom: 0; }
+
+.timeline-date {
+  color: var(--text-muted);
+  font-size: 13px;
+  padding-top: 3px;
+}
+
+.timeline-content h4 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.company {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.timeline-content p {
+  color: var(--text-soft);
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+#projects {
+  width: 100%;
+  padding: 120px 0;
+}
+
+.projects-header {
+  width: min(1400px, calc(100% - 96px));
+  margin: 0 auto;
+  padding-bottom: 64px;
+}
+
+.project-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.project-card {
+  background: rgba(255,255,255,0.94);
+  transition: all 0.35s var(--transition);
+  cursor: pointer;
+}
+
+.project-card:hover {
+  background: rgba(255,255,255,1);
+}
+
+.project-card-inner {
+  width: min(1400px, calc(100% - 96px));
+  margin: 0 auto;
+  padding: 64px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.project-number {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  font-family: "Playfair Display", serif;
+}
+
+.project-name {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(30px, 3vw, 44px);
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  transition: color 0.25s ease;
+}
+
+.project-card:hover .project-name { color: var(--accent); }
+.project-card.purple:hover .project-name { color: var(--violet); }
+.project-card.dark:hover .project-name { color: #5a8eff; }
+.project-card.warm:hover .project-name { color: var(--accent); }
+
+.project-type {
+  color: var(--text-muted);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.project-desc {
+  max-width: 520px;
+  line-height: 1.85;
+  color: var(--text-soft);
+  margin-bottom: 24px;
+}
+
+.project-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.project-tag {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-soft);
+  background: rgba(28,29,31,0.04);
+}
+
+.project-card.teal .project-tag { background: var(--accent-soft); color: var(--accent-deep); }
+.project-card.purple .project-tag { background: var(--violet-soft); color: var(--violet); }
+.project-card.dark .project-tag { background: var(--blue-soft); color: #295fd4; }
+.project-card.warm .project-tag { background: var(--accent-soft); color: var(--accent-deep); }
+
+.project-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: 1px solid currentColor;
+}
+
+.project-card:hover .project-cta { gap: 14px; }
+.project-card:hover .project-cta svg { transform: translateX(3px); }
+
+.project-visual {
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255,255,255,0.75);
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.96));
+  aspect-ratio: 4 / 3;
+  transition: transform 0.45s var(--transition), box-shadow 0.45s var(--transition);
+  will-change: transform;
+}
+
+.project-card:hover .project-visual {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.project-cover {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.project-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 16px;
+  transition: transform 0.55s var(--ease-out);
+  will-change: transform;
+}
+
+.project-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 44%, rgba(10,16,24,0.15) 76%, rgba(10,16,24,0.5) 100%);
+}
+
+.project-cover-label {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 18px;
+  color: #fff;
+  z-index: 1;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.loomtrip-visual {
+  background: linear-gradient(135deg, #e7f8f5 0%, #c9eee8 46%, #b2e8df 100%);
+}
+
+.prism-visual {
+  background: linear-gradient(135deg, #191932 0%, #26264d 48%, #30346b 100%);
+}
+
+.dashboard-visual {
+  background: linear-gradient(135deg, #091320 0%, #102742 48%, #15497b 100%);
+}
+
+.operation-visual {
+  background:
+    radial-gradient(circle at 22% 22%, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0) 24%),
+    radial-gradient(circle at 80% 14%, rgba(170, 236, 255, 0.38) 0%, rgba(170, 236, 255, 0) 28%),
+    linear-gradient(145deg, #dff7ff 0%, #beeef7 38%, #9fe7df 72%, #89ddd9 100%);
+}
+
+#skills {
+  padding: 120px 0;
+  position: relative;
+}
+
+#skills::before {
+  content: none;
+}
+
+#skills > * {
+  position: relative;
+  z-index: 1;
+}
+
+.skills-grid {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.skill-card {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 34px 30px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.32s var(--ease-out), box-shadow 0.32s var(--ease-out), border-color 0.32s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.72), rgba(255,255,255,0) 38%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.skill-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(255,255,255,0.78);
+}
+
+.skill-card:hover::before {
+  opacity: 1;
+}
+
+.skill-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  transition: transform 0.32s var(--ease-out);
+}
+
+.skill-card:nth-child(2) .skill-icon,
+.skill-card:nth-child(5) .skill-icon {
+  background: var(--violet-soft);
+  color: var(--violet);
+}
+
+.skill-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.skill-card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.skill-card:hover .skill-icon {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.skill-card p {
+  line-height: 1.8;
+  color: var(--text-soft);
+  font-size: 14px;
+}
+
+.tools-section {
+  margin-top: 72px;
+  padding-top: 64px;
+  border-top: 1px solid var(--line);
+}
+
+.tools-row {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tool-pill {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.8);
+  font-size: 14px;
+  color: var(--text-soft);
+}
+
+#contact {
+  text-align: center;
+  padding: 120px 0 160px;
+}
+
+#contact .section-label {
+  justify-content: center;
+}
+
+#contact .section-subtitle {
+  margin: 0 auto 42px;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text);
+  padding: 16px 24px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.28s ease;
+}
+
+.contact-link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-link:hover .contact-icon {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+.contact-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.32s var(--ease-out);
+}
+
+.contact-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+footer {
+  width: min(1400px, calc(100% - 96px));
+  margin: 0 auto 26px;
+  padding: 40px 0 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  position: relative;
+  z-index: 1;
+}
+
+footer p,
+.footer-links a {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.footer-links a:hover { color: var(--text); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s var(--transition), transform 0.8s var(--transition);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 20, 0.44);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.32s ease;
+  z-index: 900;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(92vw, 1420px);
+  height: 100vh;
+  background: var(--bg);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.56s var(--transition);
+  z-index: 910;
+  box-shadow: none;
+}
+
+.modal.active {
+  transform: translateX(0);
+  box-shadow: -24px 0 80px rgba(0,0,0,0.16);
+}
+
+.modal-close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.64);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  z-index: 940;
+}
+
+.modal-close.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-hero {
+  padding: 80px 72px 58px;
+}
+
+.modal-hero.teal-hero {
+  background: linear-gradient(135deg, #e6f7f5 0%, #d0f0ec 48%, #b8e8e2 100%);
+}
+
+.modal-hero.purple-hero {
+  background: linear-gradient(135deg, #1a1835 0%, #252347 48%, #2f2b5e 100%);
+  color: #fff;
+}
+
+.modal-hero.dark-hero {
+  background: linear-gradient(135deg, #08111f 0%, #10233d 46%, #123f6a 100%);
+  color: #fff;
+}
+
+.modal-hero.warm-hero {
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 20%),
+    radial-gradient(circle at 82% 16%, rgba(193,244,255,0.72) 0%, rgba(193,244,255,0) 26%),
+    radial-gradient(circle at 72% 70%, rgba(255, 203, 176, 0.22) 0%, rgba(255, 203, 176, 0) 22%),
+    linear-gradient(135deg, #f7fdff 0%, #dcf6ff 38%, #c6f2f8 68%, #ace8df 100%);
+}
+
+.modal-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--accent-deep);
+  margin-bottom: 24px;
+}
+
+.purple-hero .modal-eyebrow,
+.dark-hero .modal-eyebrow {
+  color: rgba(255,255,255,0.7);
+}
+
+.warm-hero .modal-eyebrow {
+  color: #12959a;
+}
+
+.modal-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(48px, 6vw, 82px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 16px;
+}
+
+.modal-subtitle {
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--text-soft);
+  max-width: 760px;
+}
+
+.purple-hero .modal-subtitle,
+.dark-hero .modal-subtitle {
+  color: rgba(255,255,255,0.76);
+}
+
+.warm-hero .modal-subtitle {
+  color: #607279;
+}
+
+.modal-meta {
+  margin-top: 34px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 34px 48px;
+}
+
+.purple-hero .modal-meta,
+.dark-hero .modal-meta {
+  border-top-color: rgba(255,255,255,0.14);
+}
+
+.warm-hero .modal-meta {
+  border-top-color: rgba(15,159,161,0.14);
+}
+
+.meta-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.purple-hero .meta-label,
+.dark-hero .meta-label {
+  color: rgba(255,255,255,0.54);
+}
+
+.warm-hero .meta-label {
+  color: rgba(17,108,111,0.68);
+}
+
+.meta-value {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 0 72px 110px;
+}
+
+.modal-section {
+  padding: 70px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-section-num {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-family: "Playfair Display", serif;
+  letter-spacing: 0.08em;
+}
+
+.modal-section-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+
+.modal-section-desc {
+  max-width: 760px;
+  line-height: 1.85;
+  color: var(--text-soft);
+  margin-bottom: 34px;
+}
+
+.doc-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.portfolio-shot {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid rgba(28,29,31,0.08);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.portfolio-shot.dark {
+  background: #0f1724;
+  border-color: rgba(255,255,255,0.08);
+}
+
+.portfolio-shot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  cursor: zoom-in;
+}
+
+.modal-footer {
+  margin: 78px -72px 0;
+  padding: 74px 72px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 36% 26%, rgba(182, 197, 255, 0.16) 0%, rgba(182, 197, 255, 0.04) 22%, transparent 40%),
+    radial-gradient(circle at 62% 36%, rgba(255, 214, 186, 0.16) 0%, rgba(255, 214, 186, 0.04) 22%, transparent 40%),
+    linear-gradient(180deg, rgba(255,255,255,0.58), rgba(255,255,255,0.38));
+}
+
+.modal-footer-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.modal-footer-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(34px, 4vw, 50px);
+  line-height: 1.1;
+  margin-bottom: 22px;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 980;
+  background: rgba(10, 14, 18, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s ease;
+}
+
+.lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-stage {
+  width: min(92vw, 1280px);
+  height: min(88vh, 920px);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.26);
+}
+
+.lightbox-btn {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.lightbox-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lightbox-btn.prev {
+  left: -68px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-btn.next {
+  right: -68px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-btn.close {
+  top: -60px;
+  right: 0;
+}
+
+@media (max-width: 1100px) {
+  nav,
+  nav.scrolled { padding-left: 24px; padding-right: 24px; }
+  section,
+  .projects-header,
+  .project-card-inner,
+  footer { width: calc(100% - 64px); }
+  .hero-content,
+  .about-grid,
+  .project-card-inner,
+  .skills-grid { grid-template-columns: 1fr; }
+  .hero-visual { order: -1; }
+  .hero-photo-wrapper { width: 300px; height: 390px; }
+  .hero-visual { min-height: auto; }
+  .hero-float-card { display: none; }
+  .about-right { margin-top: 0; }
+  .project-card-inner { gap: 32px; }
+  .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .timeline-item { grid-template-columns: 1fr; gap: 8px; }
+  .modal { width: 100vw; }
+  .modal-hero { padding: 64px 28px 42px; }
+  .modal-body { padding: 0 28px 84px; }
+  .modal-footer { margin: 58px -28px 0; padding: 58px 28px; }
+  .lightbox-btn.prev { left: 12px; }
+  .lightbox-btn.next { right: 12px; }
+  .lightbox-btn.close { top: 12px; right: 12px; }
+  .back-to-top {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+@media (max-width: 720px) {
+  .nav-links { gap: 18px; }
+  .nav-links a { font-size: 11px; }
+  section,
+  .projects-header,
+  .project-card-inner,
+  footer { width: calc(100% - 40px); }
+  .hero { padding: 86px 0 48px; }
+  .hero-cta-group { flex-direction: column; align-items: stretch; }
+  .cta-primary,
+  .cta-secondary { width: 100%; }
+  .about-stats,
+  .skills-grid { grid-template-columns: 1fr; }
+  .contact-links { flex-direction: column; }
+  footer {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursor"></div>
+
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m6 11 6-6 6 6"/></svg>
+</button>
+
+<nav id="nav">
+  <a href="#hero" class="nav-logo">YJ.</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="hero-greeting">UI / UX Product Designer</p>
+      <h1 class="hero-name">Yujie<br>Zhang</h1>
+      <p class="hero-name-cn">张 玉 洁</p>
+      <p class="hero-title">厦门大学 · 绘画设计 · 本科</p>
+      <p class="hero-desc">美术与视觉设计背景，两年 UI/UX 设计经验。覆盖 C 端 App、B 端 SaaS 与活动视觉设计，偏重信息梳理、交互方案与 UI 视觉落地。</p>
+      <div class="hero-cta-group">
+        <a href="#projects" class="cta-primary">
+          <span>查看项目作品</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#contact" class="cta-secondary">联系我</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-photo-wrapper">
+        <img class="hero-photo-img" src="张玉洁.webp" alt="张玉洁形象照" loading="lazy">
+        <div class="hero-photo-sheen"></div>
+      </div>
+      <div class="hero-float-card card-1">
+        <div class="float-card-label">Experience</div>
+        <div class="float-card-value">2 Years</div>
+      </div>
+      <div class="hero-float-card card-2">
+        <div class="float-card-label">Focus</div>
+        <div class="float-card-value">UI/UX · 品牌</div>
+      </div>
+      <div class="hero-float-card card-3">
+        <div class="float-card-label">Projects</div>
+        <div class="float-card-value">C端 · B端 · 运营</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-label reveal">关于我 / About</div>
+  <h2 class="section-title reveal reveal-delay-1">注重信息架构与<br>状态体系的 UI/UX 设计师</h2>
+  <p class="section-subtitle reveal reveal-delay-2">让界面清晰、操作高效，熟悉 AI 工具在设计流程中的实际应用。</p>
+
+  <div class="about-grid">
+    <div class="about-text reveal reveal-delay-2">
+      <p>我拥有美术与视觉设计的扎实背景，在两年的 UI/UX 设计实践中，主要围绕前期资料梳理、竞品整理、信息架构、界面设计与组件规范输出展开工作。</p>
+      <p>擅长用信息架构与状态体系梳理复杂业务逻辑，将混乱的需求转化为清晰的界面与流畅的交互路径。不仅关注视觉层的打磨，也重视用户在使用过程中的认知负担与信息读取效率。</p>
+      <p>同时，我持续探索 AI 工具在设计工作流中的融合应用，提升资料整理、创意发散与表达落地的效率。</p>
+      <div class="about-stats">
+        <div class="stat-item"><div class="stat-number">2</div><div class="stat-label">Years Experience</div></div>
+        <div class="stat-item"><div class="stat-number">2</div><div class="stat-label">Core Product Projects</div></div>
+        <div class="stat-item"><div class="stat-number">C/B</div><div class="stat-label">项目覆盖</div></div>
+        <div class="stat-item"><div class="stat-number">AI</div><div class="stat-label">协同工作流</div></div>
+      </div>
+    </div>
+    <div class="about-right reveal reveal-delay-3">
+      <figure class="about-resume-card">
+        <img src="ui all/UX 简历-张玉洁.webp" alt="张玉洁简历快照" loading="lazy">
+        <figcaption>张玉洁 UI/UX 设计师简历，包含两年工作经历、项目经历与软件技能。</figcaption>
+      </figure>
+      <div class="experience-timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">2025.04 — 至今</div>
+          <div class="timeline-content">
+            <h4>UI/UX 设计师</h4>
+            <p class="company">项目承接</p>
+            <p>以项目承接形式参与 C 端产品的界面设计与视觉设计，重点负责 LoomTrip 等项目的核心页面 UI 设计、视觉统一与品牌视觉规范。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2024.11 — 2025.03</div>
+          <div class="timeline-content">
+            <h4>UI/UX 设计师</h4>
+            <p class="company">厦门光耳数智科技有限公司</p>
+            <p>负责 B 端项目的 UI/UX 设计，覆盖 Prism OS 等项目的核心流程设计、页面优化与组件规范沉淀。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2023.10 — 2024.02</div>
+          <div class="timeline-content">
+            <h4>UI 设计师（实习）</h4>
+            <p class="company">点睛石网络科技有限公司</p>
+            <p>参与活动页面与基础视觉物料设计，协助完成 Banner、海报等内容输出。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="projects-header">
+    <div class="section-label reveal">项目作品 / Projects</div>
+    <h2 class="section-title reveal reveal-delay-1">项目作品</h2>
+    <p class="section-subtitle reveal reveal-delay-2">以下内容对应原始作品集章节，包含 C 端产品、B 端平台与活动运营视觉；数据可视化内容并入 Prism OS 延展展示。</p>
+  </div>
+
+  <div class="project-showcase">
+    <div class="project-card teal reveal" data-project="loomtrip">
+      <div class="project-card-inner">
+        <div class="project-info">
+          <div class="project-number">01 / 03</div>
+          <h3 class="project-name">织旅 LoomTrip</h3>
+          <div class="project-type">C-End · AI 定制旅行 App</div>
+          <p class="project-desc">基于已有需求与前期资料，梳理 AI 规划主链路，完成问卷生成、方案概览、路书详情、透明结算等核心页面 UI 与多状态设计。</p>
+          <div class="project-tags">
+            <span class="project-tag">AI规划</span>
+            <span class="project-tag">问卷生成</span>
+            <span class="project-tag">透明结算</span>
+            <span class="project-tag">品牌IP</span>
+          </div>
+          <div class="project-cta">
+            查看项目详情
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="project-visual loomtrip-visual">
+          <figure class="project-cover">
+            <img src="ui all/C端00-封面.webp" alt="织旅 LoomTrip 封面" loading="lazy">
+            <figcaption class="project-cover-label">封面</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card purple reveal" data-project="prism">
+      <div class="project-card-inner">
+        <div class="project-info">
+          <div class="project-number">02 / 03</div>
+          <h3 class="project-name">Prism OS</h3>
+          <div class="project-type">B-End · 创意协作平台</div>
+          <p class="project-desc">围绕多角色协作场景，参与立项、生产、质检与工作台等核心模块设计，优化复杂信息层级与关键状态反馈。</p>
+          <div class="project-tags">
+            <span class="project-tag">多角色协作</span>
+            <span class="project-tag">核心流程</span>
+            <span class="project-tag">工作台</span>
+            <span class="project-tag">数据延展</span>
+          </div>
+          <div class="project-cta">
+            查看项目详情
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="project-visual prism-visual">
+          <figure class="project-cover">
+            <img src="ui all/B端-首页_副本.webp" alt="Prism OS 首页封面" loading="lazy">
+            <figcaption class="project-cover-label">Prism（棱镜）</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card warm reveal" data-project="operation">
+      <div class="project-card-inner">
+        <div class="project-info">
+          <div class="project-number">03 / 03</div>
+          <h3 class="project-name">活动运营视觉</h3>
+          <div class="project-type">Visual Design · H5 / Banner / 海报</div>
+          <p class="project-desc">围绕品牌活动节点输出夏日互动 H5、中秋活动页、Banner 与海报等传播视觉，兼顾节日氛围与信息传达效率。</p>
+          <div class="project-tags">
+            <span class="project-tag">夏日 H5</span>
+            <span class="project-tag">中秋 H5</span>
+            <span class="project-tag">Banner</span>
+            <span class="project-tag">海报</span>
+          </div>
+          <div class="project-cta">
+            查看项目详情
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="project-visual operation-visual">
+          <figure class="project-cover">
+            <img src="ui all/19-夏日h5-首页.webp" alt="夏日 H5 首页" loading="lazy">
+            <figcaption class="project-cover-label">织旅夏日互动 H5</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-label reveal">能力 / Skills</div>
+  <h2 class="section-title reveal reveal-delay-1">Design Focus</h2>
+  <p class="section-subtitle reveal reveal-delay-2">偏重信息梳理、交互方案与视觉落地的设计侧重点。</p>
+
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon"><svg viewBox="0 0 24 24"><path d="M5 4h9l4 4v3"/><path d="M5 4v16h7"/><path d="M14 4v4h4"/><circle cx="16.5" cy="16.5" r="3.5"/><path d="m21 21-2-2"/></svg></div>
+      <h3>前期资料梳理</h3>
+      <p>基于已有资料、竞品信息与需求背景做整理和归纳，帮助明确页面方向与重点信息层级。</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-1">
+      <div class="skill-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M8.2 6h7.6"/><path d="M8.2 18h7.6"/><path d="M6 8.2v7.6"/><path d="M18 8.2v7.6"/></svg></div>
+      <h3>交互设计</h3>
+      <p>信息架构梳理、核心流程设计与状态补充，让复杂业务表达得更清晰、可理解、可操作。</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-2">
+      <div class="skill-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><path d="M9 9v12"/><circle cx="14.5" cy="14.5" r="1.4"/><circle cx="18" cy="14.5" r="1.4"/><path d="M13 18.5h6"/></svg></div>
+      <h3>UI 视觉</h3>
+      <p>高保真界面设计、色彩与字体规范、组件样式统一，保证页面的清晰度与整体完成度。</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-1">
+      <div class="skill-icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></div>
+      <h3>组件规范</h3>
+      <p>从基础控件到业务组件做规范整理，统一视觉语言，也方便后续协作与复用。</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-2">
+      <div class="skill-icon"><svg viewBox="0 0 24 24"><path d="M6 9 12 3l6 6-6 12-6-12Z"/><path d="M6 9h12"/><path d="m9 9 3 12 3-12"/></svg></div>
+      <h3>品牌视觉</h3>
+      <p>Logo 设计、品牌标准色与形象规范、IP 角色设计及 VI 物料延展。</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-3">
+      <div class="skill-icon"><svg viewBox="0 0 24 24"><path d="M12 4v3"/><path d="M12 17v3"/><path d="M4 12h3"/><path d="M17 12h3"/><rect x="7" y="7" width="10" height="10" rx="2.5"/><path d="M10.5 10.5h3v3h-3z"/><path d="M19 4l.6 1.4L21 6l-1.4.6L19 8l-.6-1.4L17 6l1.4-.6Z"/></svg></div>
+      <h3>AI 协同工作流</h3>
+      <p>将 ChatGPT、Gemini、Lovart 等 AI 工具融入设计流程，提升资料整理、创意发散与表达效率。</p>
+    </div>
+  </div>
+
+  <div class="tools-section reveal">
+    <div class="section-label">工具 / Tools</div>
+    <div class="tools-row">
+      <span class="tool-pill">Figma</span>
+      <span class="tool-pill">Photoshop</span>
+      <span class="tool-pill">Illustrator</span>
+      <span class="tool-pill">Cinema 4D</span>
+      <span class="tool-pill">ChatGPT</span>
+      <span class="tool-pill">Gemini</span>
+      <span class="tool-pill">Lovart</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-label reveal">联系 / Contact</div>
+  <h2 class="section-title reveal reveal-delay-1">Let's Work<br>Together</h2>
+  <p class="section-subtitle reveal reveal-delay-2">期待与你交流，一起做出好用的产品。</p>
+  <div class="contact-links reveal reveal-delay-3">
+    <a href="tel:13666095362" class="contact-link">
+      <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18h3"/><path d="M9 5.5h6"/></svg></div>
+      <span>136 6609 5362</span>
+    </a>
+    <a href="mailto:13666095362@163.com" class="contact-link">
+      <div class="contact-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></div>
+      <span>13666095362@163.com</span>
+    </a>
+    <a href="#" class="contact-link">
+      <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M12 21.5c-3.5-3.6-6.5-7-6.5-11A6.5 6.5 0 0 1 12 4a6.5 6.5 0 0 1 6.5 6.5c0 4-3 7.4-6.5 11Z"/><circle cx="12" cy="10.5" r="2.4"/></svg></div>
+      <span>辽宁 · 大连</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Yujie Zhang. All rights reserved.</p>
+  <div class="footer-links"><a href="#hero">Back to top ↑</a></div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay"></div>
+<button class="modal-close" id="modalClose" aria-label="Close">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+</button>
+
+<div class="lightbox" id="imageLightbox" aria-hidden="true">
+  <div class="lightbox-stage">
+    <button class="lightbox-btn close" id="lightboxClose" aria-label="Close preview">
+      <svg viewBox="0 0 24 24"><path d="M6 6 18 18M6 18 18 6"/></svg>
+    </button>
+    <button class="lightbox-btn prev" id="lightboxPrev" aria-label="Previous image">
+      <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <img class="lightbox-image" id="lightboxImage" alt="" loading="lazy">
+    <button class="lightbox-btn next" id="lightboxNext" aria-label="Next image">
+      <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="modal" id="modal-loomtrip">
+  <div class="modal-hero teal-hero">
+    <div class="modal-eyebrow">Project 01 · C-End Mobile App</div>
+    <h1 class="modal-title">织旅 LoomTrip</h1>
+    <p class="modal-subtitle">AI 定制旅行 App，围绕研究整理、方案推演、品牌延展与高保真界面展示展开。</p>
+    <div class="modal-meta">
+      <div><div class="meta-label">Project</div><div class="meta-value">C 端 App</div></div>
+      <div><div class="meta-label">Role</div><div class="meta-value">UI/UX · 品牌 · IP</div></div>
+      <div><div class="meta-label">Scope</div><div class="meta-value">项目概况 / 方案 / 品牌 / 界面</div></div>
+      <div><div class="meta-label">Year</div><div class="meta-value">2025</div></div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="modal-section">
+      <div class="modal-section-num">01 / Project Overview</div>
+      <h2 class="modal-section-title">项目概况</h2>
+      <p class="modal-section-desc">作品集以封面与项目概况展开，介绍织旅 LoomTrip 的产品定位、设计目标与整体方向。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/C端00-封面.webp" alt="封面" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/01-项目概况.webp" alt="项目概况" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">02 / Process & Benchmark</div>
+      <h2 class="modal-section-title">设计流程与竞品分析</h2>
+      <p class="modal-section-desc">设计流程说明整体推进方式，竞品分析用于梳理同类产品的功能差异与体验机会点。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/02-设计流程.webp" alt="设计流程" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/03-竞品分析.webp" alt="竞品分析" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">03 / Research</div>
+      <h2 class="modal-section-title">研究整理</h2>
+      <p class="modal-section-desc">这一部分包括用户调研、用户画像、用研结论与 KANO 模型，用于明确需求优先级与核心痛点。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/04-用户研究-用户调研.webp" alt="用户调研" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/04.1-用户研究-用户画像.webp" alt="用户画像" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/05-用研结论.webp" alt="用研结论" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/05.1-用研结论-Kano.webp" alt="KANO 模型" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">04 / Solution</div>
+      <h2 class="modal-section-title">解决方案</h2>
+      <p class="modal-section-desc">解决方案部分包括整体策略、功能结构与用户体验地图，用来承接前面的研究整理并落到产品框架。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/06-解决方案.webp" alt="解决方案" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/06.1-解决方案-功能结构.webp" alt="功能结构" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/06.2-解决方案-用户体验地图.webp" alt="用户体验地图" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">05 / Prototype</div>
+      <h2 class="modal-section-title">产品原型</h2>
+      <p class="modal-section-desc">产品原型部分展示首页原型、核心功能流程与原型汇总，对应产品从入口到完整链路的交互方案。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/07产品原型-首页.webp" alt="产品原型" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/07.1-产品原型-核心功能流程01.webp" alt="核心功能流程 01" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/07.2-产品原型-核心功能流程02.webp" alt="核心功能流程 02" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/07.3-产品原型汇总.webp" alt="产品原型汇总" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">06 / Brand</div>
+      <h2 class="modal-section-title">品牌设计</h2>
+      <p class="modal-section-desc">品牌设计部分包括情绪版、Logo 设计、Logo 品牌形象规范与 VI 展示，对应织旅的品牌视觉建立过程。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/08-情绪版.webp" alt="情绪版" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/09-Logo 设计.webp" alt="Logo 设计" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/10-Logo 品牌形象规范.webp" alt="Logo 品牌形象规范" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/10.1-Logo 品牌形象规范.webp" alt="VI 展示" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">07 / IP Design</div>
+      <h2 class="modal-section-title">IP 设计</h2>
+      <p class="modal-section-desc">IP 设计部分包括设计思路、视觉三视图、形象档案、表情包、引导页与缺省页。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/11-ip设计.webp" alt="IP 设计" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/11.1-ip设计-设计思路.webp" alt="设计思路" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/11.2-ip设计-三视觉图.webp" alt="IP 视觉三视图" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/11.3-ip设计-三视觉图.webp" alt="IP 形象档案" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/11.4-ip设计-ip表情包.webp" alt="IP 表情包" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/11.5-ip设计-ip引导页.webp" alt="IP 引导页" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/11.6-ip设计-ip缺省页.webp" alt="IP 缺省页" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">08 / Visual Guidelines</div>
+      <h2 class="modal-section-title">视觉规范</h2>
+      <p class="modal-section-desc">视觉规范部分包括颜色规范、字体规范、组件图鉴与图标设计。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/12-视觉规范 颜色规范.webp" alt="颜色规范" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/12.1-视觉规范 字体规范.webp" alt="字体规范" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/12.2-视觉规范 组件图鉴.webp" alt="组件图鉴" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/12.3-视觉规范 图标设计.webp" alt="图标设计" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">09 / High-Fidelity</div>
+      <h2 class="modal-section-title">高保真界面展示</h2>
+      <p class="modal-section-desc">高保真界面部分展示灵感发现、AI 定制生成、方案概览、路书详情、确认订单、用户资产沉淀与补充界面。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/13-高保真-第一章：灵感发现与内容种草.webp" alt="灵感发现与内容种草" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/13.1-高保真-精选路线.webp" alt="精选路线" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/13.2-高保真-真实口碑.webp" alt="真实口碑" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/14-高保真第二章：AI 定制生成与方案输出.webp" alt="AI 定制生成与方案输出" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/14.1-高保真-方案概览.webp" alt="方案概览" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/14.2-高保真-路书详情.webp" alt="路书详情" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/14.3-高保真-确认订单.webp" alt="确认订单" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/15-第四章高保真-用户资产沉淀与分享传播.webp" alt="用户资产沉淀与分享传播" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/15.1-高保真-城市足迹页.webp" alt="城市足迹页" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/15.2-高保真-真实口碑.webp" alt="真实口碑" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/16-补充界面展示.webp" alt="补充界面展示" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/17-整体页面展示.webp" alt="整体页面展示" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">10 / Closure</div>
+      <h2 class="modal-section-title">项目收束</h2>
+      <p class="modal-section-desc">项目收束页总结了织旅 LoomTrip 的主要设计成果与页面落地情况。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/18-项目收束.webp" alt="项目收束" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-eyebrow">Next Project</div>
+      <h3 class="modal-footer-title">Prism OS<br>创意协作 OS</h3>
+      <button class="cta-primary" data-next="prism">
+        <span>查看下一个项目</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-prism">
+  <div class="modal-hero purple-hero">
+    <div class="modal-eyebrow">Project 02 · B-End SaaS Platform</div>
+    <h1 class="modal-title">Prism (棱镜)</h1>
+    <p class="modal-subtitle">创意协作与资产管理 OS，聚焦立项、生产、质检与交付的多角色协作体验。</p>
+    <div class="modal-meta">
+      <div><div class="meta-label">Project</div><div class="meta-value">B 端 SaaS</div></div>
+      <div><div class="meta-label">Type</div><div class="meta-value">创意协作平台</div></div>
+      <div><div class="meta-label">Role</div><div class="meta-value">UI/UX 设计师</div></div>
+      <div><div class="meta-label">Scope</div><div class="meta-value">首页 / 流程 / 工作台 / 规范</div></div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="modal-section">
+      <div class="modal-section-num">01 / Cover</div>
+      <h2 class="modal-section-title">首页封面与设计目标</h2>
+      <p class="modal-section-desc">这一部分展示 Prism 的首页封面与设计目标，建立平台定位、核心能力与整体视觉基调。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/B端-首页_副本.webp" alt="Prism 创意协作与资产管理 OS" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/B端-设计目标_副本.webp" alt="设计目标" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">02 / Research & Structure</div>
+      <h2 class="modal-section-title">项目流程、用户声浪、问题汇总与功能架构</h2>
+      <p class="modal-section-desc">前期分析部分包括项目流程、用户声浪、问题汇总、用户画像与功能架构，用于梳理业务链路与关键需求。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/B端-项目流程_副本.webp" alt="项目流程" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/B端-用户声浪_副本.webp" alt="用户声浪" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/B端-05问题汇总_副本.webp" alt="问题汇总" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/B端-用户画像01_副本.webp" alt="用户画像" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/功能架构_副本.webp" alt="功能架构" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">03 / Initiation Flow</div>
+      <h2 class="modal-section-title">项目创建与立项流程</h2>
+      <p class="modal-section-desc">这一部分围绕项目创建与立项流程展开，包含场景洞察、核心业务泳道图以及从创建基础信息到立项完成的关键页面。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/B端-项目创建与立项流程：场景洞察_副本.webp" alt="项目创建与立项流程：场景洞察" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/B端-项目创建与立项流程：泳道图_副本.webp" alt="核心业务泳道图：立项与启动" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/01-立项step1-创建基础信息_副本.webp" alt="创建基础信息" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/02-Brief 上传与素材归档_副本.webp" alt="Brief 上传与素材归档" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/03-成员分配体验升级_副本.webp" alt="成员分配体验升级" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/04-step4-风险智能评估_副本.webp" alt="风险智能评估" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/04.1-健康通过_副本.webp" alt="健康通过" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/05-立项完成与反馈_副本.webp" alt="立项完成与反馈" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">04 / Production & Workbench</div>
+      <h2 class="modal-section-title">项目生产、质检与工作台页面</h2>
+      <p class="modal-section-desc">项目生产与质检部分覆盖场景洞察、核心业务泳道图，以及画廊、沉浸式画布、智能质检、工作台、交付配置和通知等页面。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/B端-项目生产与质检流程：场景洞察_副本.webp" alt="项目生产与质检流程：场景洞察" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/B端-项目生产与质检流程：泳道图_副本.webp" alt="核心业务泳道图：项目生产与质检" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/11-01项目画廊_副本.webp" alt="项目画廊" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/02-沉浸式画布_副本.webp" alt="沉浸式画布" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/03-Auto-QA 智能质检_副本.webp" alt="Auto-QA 智能质检" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/04AE工作台_副本.webp" alt="AE 工作台" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/05详情工作页_副本.webp" alt="详情工作页" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/06交付配置页_副本.webp" alt="交付配置页" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/06-通知中心_副本.webp" alt="通知中心" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/07游客演示页_副本.webp" alt="游客演示页" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/08待审核工作台_副本.webp" alt="待审核工作台" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/B端-其他_副本.webp" alt="其他页面" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">05 / Component Library</div>
+      <h2 class="modal-section-title">组件库结构与规范</h2>
+      <p class="modal-section-desc">组件库部分展示组件库结构、规范、组件规范与图标设计，承接前面的业务页面并沉淀统一的设计语言。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/组件库结构-封面_副本.webp" alt="组件库结构" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/01规范_副本.webp" alt="规范" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/组件规范_副本.webp" alt="组件规范" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/02图标设计_副本.webp" alt="图标设计" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">06 / Interface Summary</div>
+      <h2 class="modal-section-title">B端核心界面总结</h2>
+      <p class="modal-section-desc">本部分回顾 Prism OS 在协作流程、页面结构与组件规范层面的设计成果，作为核心 B 端界面部分的阶段收束。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/项目总结_副本.webp" alt="项目总结" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">07 / Data Visualization Extension</div>
+      <h2 class="modal-section-title">数据可视化延展｜经营驾驶舱</h2>
+      <p class="modal-section-desc">作为 Prism OS 的管理视角延展，围绕经营驾驶舱场景，补充项目进度、协作效率与风险状态的数据可视化表达。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot dark"><img src="ui all/数据化大屏-封面_副本.webp" alt="PRISM 创意协作可视化总控大屏" loading="lazy"></figure>
+        <figure class="portfolio-shot dark"><img src="ui all/数据化大屏-01_副本.webp" alt="数据可视化设计流程" loading="lazy"></figure>
+        <figure class="portfolio-shot dark"><img src="ui all/数据化大屏-02_副本.webp" alt="数据可视化页面布局" loading="lazy"></figure>
+        <figure class="portfolio-shot dark"><img src="ui all/数据化大屏-03_副本.webp" alt="数据可视化风格定义" loading="lazy"></figure>
+        <figure class="portfolio-shot dark"><img src="ui all/数据化大屏-04_副本.webp" alt="经营驾驶舱页面分析" loading="lazy"></figure>
+        <figure class="portfolio-shot dark"><img src="ui all/数据化大屏-05_副本.webp" alt="经营驾驶舱页面展示" loading="lazy"></figure>
+        <figure class="portfolio-shot dark"><img src="ui all/数据化大屏-06_副本.webp" alt="经营驾驶舱页面展示" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-eyebrow">Next Project</div>
+      <h3 class="modal-footer-title">活动运营视觉<br>H5 / Banner / 海报</h3>
+      <button class="cta-primary" data-next="operation">
+        <span>查看下一个项目</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-operation">
+  <div class="modal-hero warm-hero">
+    <div class="modal-eyebrow">Project 03 · Visual Design</div>
+    <h1 class="modal-title">活动运营视觉</h1>
+    <p class="modal-subtitle">涵盖夏日互动 H5、中秋活动页、Banner 与海报等运营传播视觉输出。</p>
+    <div class="modal-meta">
+      <div><div class="meta-label">Type</div><div class="meta-value">运营视觉</div></div>
+      <div><div class="meta-label">Channels</div><div class="meta-value">H5 / Banner / 海报</div></div>
+      <div><div class="meta-label">Role</div><div class="meta-value">主视觉 · 界面设计</div></div>
+      <div><div class="meta-label">Year</div><div class="meta-value">2024–2025</div></div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="modal-section">
+      <div class="modal-section-num">01 / Summer Interactive H5</div>
+      <h2 class="modal-section-title">织旅夏日互动 H5</h2>
+      <p class="modal-section-desc">夏日互动 H5 包含首页、关键页面展示与页面总览，完整呈现活动入口、互动玩法与页面延展。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/19-夏日h5-首页.webp" alt="织旅夏日互动 H5" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/19.1-夏日h5-关键页面展示.webp" alt="关键页面展示" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/19.2-夏日h5-页面总览.webp" alt="页面总览" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">02 / Mid-Autumn Festival H5</div>
+      <h2 class="modal-section-title">月夜礼遇 H5</h2>
+      <p class="modal-section-desc">中秋活动页围绕月夜礼遇主题展开，包含首页、关键页面总览与关键展示。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/20-中秋-首页01.webp" alt="月夜礼遇 H5" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/20.1-中秋-关键页面总览.webp" alt="关键页面总览" loading="lazy"></figure>
+        <figure class="portfolio-shot"><img src="ui all/中秋-关键展示.webp" alt="关键展示" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">03 / Banner Showcase</div>
+      <h2 class="modal-section-title">Banner 展示</h2>
+      <p class="modal-section-desc">Banner 部分集中展示活动传播中的横向视觉物料。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/21-banner.webp" alt="Banner 展示" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-num">04 / Poster Showcase</div>
+      <h2 class="modal-section-title">海报展示</h2>
+      <p class="modal-section-desc">海报展示部分呈现活动视觉在静态宣传物料上的延展效果。</p>
+      <div class="doc-stack">
+        <figure class="portfolio-shot"><img src="ui all/海报.webp" alt="海报展示" loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-eyebrow">Back to All Projects</div>
+      <h3 class="modal-footer-title">Thank You<br>for reading</h3>
+      <button class="cta-primary" data-next="loomtrip">
+        <span>回到首个项目</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const nav = document.getElementById("nav");
+const navLinks = document.querySelectorAll(".nav-links a");
+const sections = ["hero", "about", "projects", "skills", "contact"]
+  .map(id => document.getElementById(id))
+  .filter(Boolean);
+const progressBar = document.getElementById("progressBar");
+const backToTop = document.getElementById("backToTop");
+
+function updateNavOnScroll() {
+  const y = window.scrollY;
+  nav.classList.toggle("scrolled", y > 40);
+
+  let activeId = "hero";
+  const offset = window.innerHeight * 0.35;
+  for (const sec of sections) {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= offset) activeId = sec.id;
+  }
+  navLinks.forEach(link => {
+    const href = link.getAttribute("href").replace("#", "");
+    link.classList.toggle("active", href === activeId);
+  });
+
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docH > 0 ? (y / docH) * 100 : 0;
+  progressBar.style.width = pct + "%";
+  backToTop.classList.toggle("visible", y > window.innerHeight * 0.6);
+}
+
+let scrollRaf = null;
+window.addEventListener("scroll", () => {
+  if (scrollRaf) return;
+  scrollRaf = requestAnimationFrame(() => {
+    updateNavOnScroll();
+    scrollRaf = null;
+  });
+}, { passive: true });
+updateNavOnScroll();
+
+backToTop.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+const cursor = document.getElementById("cursor");
+const cursorRing = document.getElementById("cursorRing");
+let mouseX = 0;
+let mouseY = 0;
+let ringX = 0;
+let ringY = 0;
+
+document.addEventListener("mousemove", e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursor.style.left = `${mouseX - 4}px`;
+  cursor.style.top = `${mouseY - 4}px`;
+});
+
+function animateRing() {
+  ringX += (mouseX - ringX) * 0.18;
+  ringY += (mouseY - ringY) * 0.18;
+  cursorRing.style.left = `${ringX}px`;
+  cursorRing.style.top = `${ringY}px`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const interactiveSelector = "a, button, .project-card, .skill-card, .tool-pill, .contact-link, .portfolio-shot img, .stat-item, .timeline-item";
+document.querySelectorAll(interactiveSelector).forEach(el => {
+  el.addEventListener("mouseenter", () => {
+    cursor.style.transform = "scale(2.4)";
+    cursorRing.style.width = "56px";
+    cursorRing.style.height = "56px";
+    cursorRing.style.borderColor = "rgba(14, 159, 159, 0.6)";
+  });
+  el.addEventListener("mouseleave", () => {
+    cursor.style.transform = "scale(1)";
+    cursorRing.style.width = "36px";
+    cursorRing.style.height = "36px";
+    cursorRing.style.borderColor = "rgba(14, 159, 159, 0.4)";
+  });
+});
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener("click", e => {
+    const target = document.querySelector(link.getAttribute("href"));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+const heroVisual = document.querySelector(".hero-visual");
+const heroPhotoWrapper = document.querySelector(".hero-photo-wrapper");
+const heroFloatCards = document.querySelectorAll(".hero-float-card");
+
+if (heroVisual && heroPhotoWrapper) {
+  heroVisual.addEventListener("mousemove", e => {
+    const rect = heroVisual.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / rect.width;
+    const dy = (e.clientY - cy) / rect.height;
+    heroPhotoWrapper.style.transform = `rotateY(${dx * 6}deg) rotateX(${-dy * 6}deg) translateZ(0)`;
+    heroFloatCards.forEach((card, i) => {
+      const factor = (i + 1) * 4;
+      card.style.transform = `translate(${dx * factor}px, ${dy * factor}px)`;
+    });
+  });
+  heroVisual.addEventListener("mouseleave", () => {
+    heroPhotoWrapper.style.transform = "";
+    heroFloatCards.forEach(card => {
+      card.style.transform = "";
+    });
+  });
+}
+
+document.querySelectorAll(".skill-card").forEach(card => {
+  card.addEventListener("mousemove", e => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty("--x", `${x}%`);
+    card.style.setProperty("--y", `${y}%`);
+  });
+});
+
+document.querySelectorAll(".project-card").forEach(card => {
+  const cover = card.querySelector(".project-cover img");
+  if (cover) {
+    card.addEventListener("mousemove", e => {
+      const rect = card.getBoundingClientRect();
+      const dx = ((e.clientX - rect.left) / rect.width - 0.5) * 6;
+      const dy = ((e.clientY - rect.top) / rect.height - 0.5) * 6;
+      cover.style.transform = `scale(1.04) translate(${dx}px, ${dy}px)`;
+    });
+    card.addEventListener("mouseleave", () => {
+      cover.style.transform = "";
+    });
+  }
+});
+
+const overlay = document.getElementById("modalOverlay");
+const closeBtn = document.getElementById("modalClose");
+const modals = {
+  loomtrip: document.getElementById("modal-loomtrip"),
+  prism: document.getElementById("modal-prism"),
+  operation: document.getElementById("modal-operation")
+};
+let currentModal = null;
+
+const lightbox = document.getElementById("imageLightbox");
+const lightboxImage = document.getElementById("lightboxImage");
+const lightboxClose = document.getElementById("lightboxClose");
+const lightboxPrev = document.getElementById("lightboxPrev");
+const lightboxNext = document.getElementById("lightboxNext");
+let currentGallery = [];
+let currentImageIndex = 0;
+
+function getModalImages(modal) {
+  return modal ? Array.from(modal.querySelectorAll(".portfolio-shot img")) : [];
+}
+
+function updateLightboxImage() {
+  const image = currentGallery[currentImageIndex];
+  if (!image) return;
+  lightboxImage.style.opacity = "0";
+  setTimeout(() => {
+    lightboxImage.src = image.src;
+    lightboxImage.alt = image.alt || "";
+    lightboxImage.style.opacity = "";
+  }, 120);
+}
+
+function openLightbox(image) {
+  if (!currentModal) return;
+  currentGallery = getModalImages(currentModal);
+  currentImageIndex = currentGallery.indexOf(image);
+  if (currentImageIndex < 0) return;
+  lightboxImage.src = image.src;
+  lightboxImage.alt = image.alt || "";
+  lightbox.classList.add("active");
+  lightbox.setAttribute("aria-hidden", "false");
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("active");
+  lightbox.setAttribute("aria-hidden", "true");
+}
+
+function stepLightbox(step) {
+  if (!currentGallery.length) return;
+  currentImageIndex = (currentImageIndex + step + currentGallery.length) % currentGallery.length;
+  updateLightboxImage();
+}
+
+function openModal(name) {
+  closeLightbox();
+  if (currentModal) currentModal.classList.remove("active");
+  currentModal = modals[name];
+  if (!currentModal) return;
+  document.body.classList.add("modal-open");
+  overlay.classList.add("active");
+  closeBtn.classList.add("active");
+  setTimeout(() => {
+    currentModal.classList.add("active");
+    currentModal.scrollTop = 0;
+  }, 40);
+}
+
+function closeModal() {
+  closeLightbox();
+  if (currentModal) currentModal.classList.remove("active");
+  overlay.classList.remove("active");
+  closeBtn.classList.remove("active");
+  document.body.classList.remove("modal-open");
+  setTimeout(() => {
+    currentModal = null;
+  }, 600);
+}
+
+document.querySelectorAll(".project-card").forEach(card => {
+  card.addEventListener("click", () => openModal(card.dataset.project));
+});
+
+document.querySelectorAll("[data-next]").forEach(btn => {
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    if (currentModal) {
+      currentModal.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => openModal(btn.dataset.next), 250);
+    } else {
+      openModal(btn.dataset.next);
+    }
+  });
+});
+
+document.querySelectorAll(".portfolio-shot img").forEach(image => {
+  image.addEventListener("click", () => openLightbox(image));
+});
+
+closeBtn.addEventListener("click", closeModal);
+overlay.addEventListener("click", closeModal);
+
+lightboxClose.addEventListener("click", closeLightbox);
+lightboxPrev.addEventListener("click", e => {
+  e.stopPropagation();
+  stepLightbox(-1);
+});
+lightboxNext.addEventListener("click", e => {
+  e.stopPropagation();
+  stepLightbox(1);
+});
+lightbox.addEventListener("click", e => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+document.addEventListener("keydown", e => {
+  if (lightbox.classList.contains("active")) {
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") stepLightbox(-1);
+    if (e.key === "ArrowRight") stepLightbox(1);
+    return;
+  }
+  if (e.key === "Escape" && currentModal) closeModal();
+});
+</script>
+
+</body>
+</html>
